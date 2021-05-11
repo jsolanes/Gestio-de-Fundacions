@@ -1,9 +1,9 @@
 <?php
 session_start();
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = 'spygames';
-$DATABASE_NAME = 'fundlogin';
+$DATABASE_HOST = 'papersgchospital.mysql.db';
+$DATABASE_USER = 'papersgchospital';
+$DATABASE_PASS = 'zS70j3yYAImt';
+$DATABASE_NAME = 'papersgchospital';
 
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if ( mysqli_connect_errno() ) {
@@ -13,9 +13,9 @@ if ( mysqli_connect_errno() ) {
 if ( !isset($_POST['username'], $_POST['password']) ) {
 	exit('Please fill both the username and password fields!');
 }
-
-if ($stmt = $con->prepare('SELECT idLogin, Fundacio, Esquema, NomCognoms FROM login WHERE Usuari = ?')) {
-	$stmt->bind_param('s', $_POST['username']);
+$q = "SELECT idLogin, Fundacio, Esquema, NomCognoms FROM login WHERE Usuari = '" .$_POST['username'] . "' AND Password = '" . $_POST['password'] . "'" ;
+// echo $q;
+if ($stmt = $con->prepare($q)) {
 	$stmt->execute();
 	$stmt->store_result();
         
@@ -34,8 +34,18 @@ if ($stmt = $con->prepare('SELECT idLogin, Fundacio, Esquema, NomCognoms FROM lo
                
 	        
 	} else {
-		echo 'Usuari o Password Incorrectes!';
+	    echo "<html>";	 
+            echo "<head>";
+            echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
+            echo "</head>";            
+            echo "<body>";
+            echo "<br>";
+            echo " <p class='bg-danger text-white'>Usuari o Password Incorrectes</p>";
+            // echo 'Usuari o Password Incorrectes!';
+            echo "</body>";
+            echo "</html>";
 	}
 	$stmt->close();
 }
 ?>
+
